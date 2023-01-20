@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import com.parkit.parkingsystem.constants.Discount;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -25,6 +26,13 @@ public class ParkingService {
         this.inputReaderUtil = inputReaderUtil;
         this.parkingSpotDAO = parkingSpotDAO;
         this.ticketDAO = ticketDAO;
+    }
+
+    //fonction qui retourne le nombre de visites pour le discount 5%
+    public int processRecuringUserDiscount(String vehicleRegNumber){
+        int userVisits = parkingSpotDAO.getUserVisits(vehicleRegNumber);
+
+        return userVisits;
     }
 
     public void processIncomingVehicle() {
@@ -103,7 +111,15 @@ public class ParkingService {
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
             Date outTime = new Date();
             ticket.setOutTime(outTime);
-            fareCalculatorService.calculateFare(ticket);
+
+            //TODO DONE ICI mettre le code de la promo 5%
+            int discount = 0;
+            if(processRecuringUserDiscount(vehicleRegNumber) >= 2){
+                System.out.println("Welcome back! As a recurring user of our parking lot, you'll benefit from a "+Discount.RECURING_USER_DISCOUNT+"% discount.");
+                discount = Discount.RECURING_USER_DISCOUNT;
+            }
+            fareCalculatorService.calculateFare(ticket, discount);
+
             if(ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);

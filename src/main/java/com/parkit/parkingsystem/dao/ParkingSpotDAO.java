@@ -16,6 +16,32 @@ public class ParkingSpotDAO {
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
+    //fonction pour récupérer le nombre de visites d'un user
+    //pour le discount 5%
+    public int getUserVisits(String vehicleRegNumber){
+        Connection con = null;
+        int userVisits = 0;
+        try {
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.GET_USER_VISITS);
+            //VISITS (COUNT t.ID)
+            ps.setString(1,vehicleRegNumber);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+
+                userVisits = rs.getInt(1);
+
+            }
+            dataBaseConfig.closeResultSet(rs);
+            dataBaseConfig.closePreparedStatement(ps);
+        }catch (Exception ex){
+            logger.error("Error fetching number of user visits",ex);
+        }finally {
+            dataBaseConfig.closeConnection(con);
+            return userVisits;
+        }
+    }
+
     public int getNextAvailableSlot(ParkingType parkingType){
         Connection con = null;
         int result=-1;

@@ -3,29 +3,57 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
+import java.util.Locale;
+
 public class FareCalculatorService {
 
-    public void calculateFare(Ticket ticket){
+    public void calculateFare(Ticket ticket, int discount){
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
         }
 
-        int inHour = ticket.getInTime().getHours();
-        int outHour = ticket.getOutTime().getHours();
+        //bug le code actuelle récupère uniquement l'heure de départ et d'arrivée
+        //ce qui donne toujours 0 en desous d'une heure.
+        //on veut plutot récupérer le timestamp des deux horaires et prendre la différence.
 
-        //TODO: Some tests are failing here. Need to check if this logic is correct
-        int duration = outHour - inHour;
+        long inHour = ticket.getInTime().getTime();
+        long outHour = ticket.getOutTime().getTime();
 
+        //TODO DONE: Some tests are failing here. Need to check if this logic is correct
+        //duration est en heures donc on divise par 1000 puis 3600
+        //ne pas oublier le f pour la précision du float
+        double duration = ((outHour - inHour)/1000)/3600f;
+
+        //on arrondi à 3 chiffres après la virgule
+        duration = Math.round(duration * 1000.0) / 1000.0;
+
+        //promo moins de 30 minutes
+        if(duration <= 0.500){
+            duration = 0;
+        }
+
+        //on ajoute le discount au prix
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+                double price = duration * Fare.CAR_RATE_PER_HOUR;
+                ticket.setPrice(calculateDiscount(discount, price));
                 break;
             }
             case BIKE: {
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
+                double price = duration * Fare.BIKE_RATE_PER_HOUR;
+                ticket.setPrice(calculateDiscount(discount, price));
                 break;
             }
             default: throw new IllegalArgumentException("Unkown Parking Type");
         }
+    }
+
+    //fonction pour calculer le discount
+    public double calculateDiscount(int discount, double price){
+        double discountedPrice = price - ((price * discount)/100);
+        //on arrondi à 3 chiffres après la virgule
+        discountedPrice = Math.round(discountedPrice * 1000.0) / 1000.0;
+
+        return discountedPrice;
     }
 }
