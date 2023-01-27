@@ -28,7 +28,7 @@ public class FareCalculatorService {
         duration = Math.round(duration * 1000.0) / 1000.0;
 
         //promo moins de 30 minutes
-        if(duration <= 0.500){
+        if(duration <= 0.50){
             duration = 0;
         }
 
