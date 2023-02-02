@@ -22,7 +22,7 @@ public class FareCalculatorService {
         //TODO DONE: Some tests are failing here. Need to check if this logic is correct
         //duration est en heures donc on divise par 1000 puis 3600
         //ne pas oublier le f pour la précision du float
-        double duration = ((outHour - inHour)/1000)/3600f;
+        double duration = ((outHour - inHour)/1000f)/3600f;
 
         //on arrondi à 3 chiffres après la virgule
         duration = Math.round(duration * 1000.0) / 1000.0;
