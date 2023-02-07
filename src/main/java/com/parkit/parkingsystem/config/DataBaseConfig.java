@@ -9,11 +9,16 @@ public class DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseConfig");
 
+
+    private String getPassword(){
+        return System.getProperty("password");
+    }
+
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/prod","root","");
+                "jdbc:mysql://localhost:3306/prod","parkingsystem",getPassword());
     }
 
     public void closeConnection(Connection con){
