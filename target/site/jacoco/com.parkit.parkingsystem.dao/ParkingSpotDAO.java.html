@@ -20,22 +20,22 @@ import java.sql.SQLException;
     //fonction pour récupérer le nombre de visites d'un user
     //pour le discount 5%
     public int getUserVisits(String vehicleRegNumber){
-<span class="nc" id="L23">        Connection con = null;</span>
-<span class="nc" id="L24">        int userVisits = 0;</span>
-<span class="nc" id="L25">        PreparedStatement ps = null;</span>
+<span class="fc" id="L23">        Connection con = null;</span>
+<span class="fc" id="L24">        int userVisits = 0;</span>
+<span class="fc" id="L25">        PreparedStatement ps = null;</span>
         try {
-<span class="nc" id="L27">            con = dataBaseConfig.getConnection();</span>
-<span class="nc" id="L28">            ps = con.prepareStatement(DBConstants.GET_USER_VISITS);</span>
+<span class="fc" id="L27">            con = dataBaseConfig.getConnection();</span>
+<span class="fc" id="L28">            ps = con.prepareStatement(DBConstants.GET_USER_VISITS);</span>
             //VISITS (COUNT t.ID)
-<span class="nc" id="L30">            ps.setString(1,vehicleRegNumber);</span>
-<span class="nc" id="L31">            ResultSet rs = ps.executeQuery();</span>
-<span class="nc bnc" id="L32" title="All 2 branches missed.">            if(rs.next()){</span>
+<span class="fc" id="L30">            ps.setString(1,vehicleRegNumber);</span>
+<span class="fc" id="L31">            ResultSet rs = ps.executeQuery();</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">            if(rs.next()){</span>
 
-<span class="nc" id="L34">                userVisits = rs.getInt(1);</span>
+<span class="fc" id="L34">                userVisits = rs.getInt(1);</span>
 
             }
-<span class="nc" id="L37">            dataBaseConfig.closeResultSet(rs);</span>
-<span class="nc" id="L38">            dataBaseConfig.closePreparedStatement(ps);</span>
+<span class="fc" id="L37">            dataBaseConfig.closeResultSet(rs);</span>
+<span class="fc" id="L38">            dataBaseConfig.closePreparedStatement(ps);</span>
 <span class="nc" id="L39">        }catch (Exception ex){</span>
             try {
 <span class="nc bnc" id="L41" title="All 2 branches missed.">                if(ps != null){</span>
@@ -46,8 +46,8 @@ import java.sql.SQLException;
 <span class="nc" id="L46">            }</span>
 <span class="nc" id="L47">            logger.error(&quot;Error fetching number of user visits&quot;,ex);</span>
         }finally {
-<span class="nc" id="L49">            dataBaseConfig.closeConnection(con);</span>
-<span class="nc" id="L50">            return userVisits;</span>
+<span class="pc" id="L49">            dataBaseConfig.closeConnection(con);</span>
+<span class="pc" id="L50">            return userVisits;</span>
         }
     }
 

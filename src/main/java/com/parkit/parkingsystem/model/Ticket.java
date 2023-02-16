@@ -58,7 +58,12 @@ public class Ticket {
 
     public Date getInTime() {
 
-        return (Date) inTime.clone();
+        if(inTime == null){
+            return null;
+
+        }else {
+            return (Date) inTime.clone();
+        }
     }
 
     public void setInTime(Date inTime) {
@@ -66,12 +71,22 @@ public class Ticket {
     }
 
     public Date getOutTime() {
-        return (Date) outTime.clone();
+        if(outTime == null){
+            return null;
+
+        }else {
+            return (Date) outTime.clone();
+        }
 
     }
 
     public void setOutTime(Date outTime) {
-        this.outTime = (Date) outTime.clone();
+        if(outTime != null){
+            this.outTime = (Date) outTime.clone();
+        }else {
+            this.outTime = null;
+        }
+
     }
 
 
