@@ -10,11 +10,16 @@ public class DataBaseTestConfig extends DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseTestConfig");
 
+    private String getPassword(){
+        return System.getProperty("password");
+    }
+
+
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/test","root","");
+                "jdbc:mysql://localhost:3306/test","parkingsystem",getPassword());
     }
 
     public void closeConnection(Connection con){

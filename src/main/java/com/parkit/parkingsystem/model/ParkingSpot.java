@@ -2,7 +2,7 @@ package com.parkit.parkingsystem.model;
 
 import com.parkit.parkingsystem.constants.ParkingType;
 
-public class ParkingSpot {
+public class ParkingSpot  {
     private int number;
     private ParkingType parkingType;
     private boolean isAvailable;
@@ -11,6 +11,10 @@ public class ParkingSpot {
         this.number = number;
         this.parkingType = parkingType;
         this.isAvailable = isAvailable;
+    }
+
+    public ParkingSpot copy(){
+        return new ParkingSpot(getId(), getParkingType(), isAvailable());
     }
 
     public int getId() {
