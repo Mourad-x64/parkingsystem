@@ -214,6 +214,7 @@
 				<artifactId>spotbugs-maven-plugin</artifactId>
 				<version>4.7.3.0</version>
 				<configuration>
+					<excludeFilterFile>ignore.xml</excludeFilterFile>
 					<xmlOutput>true</xmlOutput>
 					<!-- Optional directory to put spotbugs xdoc xml report -->
 					<xmlOutputDirectory>target/site</xmlOutputDirectory>

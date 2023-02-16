@@ -66,6 +66,7 @@ public class ParkingDataBaseIT {
 
     @Test
     public void testParkingACar(){
+
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
         //TODO DONE: check that a ticket is actualy saved in DB and Parking table is updated with availability
@@ -106,8 +107,8 @@ public class ParkingDataBaseIT {
         }
 
 
-        // aaaaa assertEquals(1, parkingNumber);
-        // aaaa  assertFalse(isAvailable);
+        assertEquals(1, parkingNumber);
+        assertFalse(isAvailable);
     }
 
     @Test
@@ -145,7 +146,7 @@ public class ParkingDataBaseIT {
 
 
         assertEquals(0.0, fare);
-        // aaaa assertNotNull(outTime);
+        assertNotNull(outTime);
     }
 
 }
