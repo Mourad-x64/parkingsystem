@@ -25,8 +25,14 @@ public class InteractiveShell {
             int option = inputReaderUtil.readSelection();
             switch(option){
                 case 1: {
-                    parkingService.processIncomingVehicle();
-                    break;
+                    if(!parkingService.processIncomingVehicle())
+                    {
+                        System.out.println("Exiting from the system!");
+                        continueApp = false;
+                        break;
+                    }else{
+                        break;
+                    }
                 }
                 case 2: {
                     parkingService.processExitingVehicle();

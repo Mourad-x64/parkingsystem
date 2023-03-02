@@ -17,4 +17,6 @@ public class DBConstants {
     //requete qui renvoi le nombre de fois qu'une plaque d'immatriculation est entrée dans le parking
     //pour le discount 5%
     public static final String GET_USER_VISITS = "select COUNT(t.ID) AS VISITS from ticket t where t.VEHICLE_REG_NUMBER=?";
+
+    public static final String CHECK_TICKET = "select COUNT(t.ID) from ticket t where t.VEHICLE_REG_NUMBER=? and ISNULL(t.OUT_TIME) = 1";
 }

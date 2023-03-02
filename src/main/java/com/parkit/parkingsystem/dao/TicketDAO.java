@@ -16,6 +16,51 @@ public class TicketDAO {
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
+    public boolean checkTicket(String vehicleRegNumber){
+        Connection con = null;
+        PreparedStatement ps = null;
+        int userInParking = 0;
+        try {
+            con = dataBaseConfig.getConnection();
+            ps = con.prepareStatement(DBConstants.CHECK_TICKET);
+            ps.setString(1, vehicleRegNumber);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+
+                userInParking = rs.getInt(1);
+
+            }
+
+            return ps.execute();
+        }catch (Exception ex){
+            try {
+                if(ps != null){
+                    ps.close();
+                }
+            } catch (SQLException warn) {
+                // we do nothing
+            }
+            logger.error("Error fetching next available slot",ex);
+        }finally {
+            try {
+                if(ps != null){
+                    ps.close();
+                }
+            } catch (SQLException warn) {
+                // we do nothing
+            }
+            dataBaseConfig.closeConnection(con);
+
+            if(userInParking > 0){
+                return true;
+            }else{
+                return false;
+            }
+
+
+        }
+    }
+
     public boolean saveTicket(Ticket ticket){
         Connection con = null;
         PreparedStatement ps = null;

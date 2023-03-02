@@ -3,58 +3,60 @@
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
-import java.util.Locale;
+<span class="fc" id="L6">public class FareCalculatorService {</span>
 
-<span class="fc" id="L8">public class FareCalculatorService {</span>
+<span class="fc" id="L8">    private double MILLISECONDS_IN_SECOND = 1000f;</span>
+<span class="fc" id="L9">    private double SECONDS_IN_HOUR = 3600f;</span>
+
 
     public void calculateFare(Ticket ticket, int discount){
-<span class="pc bpc" id="L11" title="1 of 4 branches missed.">        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){</span>
-<span class="fc" id="L12">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot;+ticket.getOutTime().toString());</span>
+<span class="pc bpc" id="L13" title="1 of 4 branches missed.">        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){</span>
+<span class="fc" id="L14">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot;+ticket.getOutTime().toString());</span>
         }
 
         //bug le code actuelle récupère uniquement l'heure de départ et d'arrivée
         //ce qui donne toujours 0 en desous d'une heure.
         //on veut plutot récupérer le timestamp des deux horaires et prendre la différence.
 
-<span class="fc" id="L19">        long inHour = ticket.getInTime().getTime();</span>
-<span class="fc" id="L20">        long outHour = ticket.getOutTime().getTime();</span>
+<span class="fc" id="L21">        long inHour = ticket.getInTime().getTime();</span>
+<span class="fc" id="L22">        long outHour = ticket.getOutTime().getTime();</span>
 
         //TODO DONE: Some tests are failing here. Need to check if this logic is correct
         //duration est en heures donc on divise par 1000 puis 3600
         //ne pas oublier le f pour la précision du float
-<span class="fc" id="L25">        double duration = ((outHour - inHour)/1000f)/3600f;</span>
+<span class="fc" id="L27">        double duration = ((outHour - inHour)/ MILLISECONDS_IN_SECOND)/SECONDS_IN_HOUR;</span>
 
         //on arrondi à 3 chiffres après la virgule
-<span class="fc" id="L28">        duration = Math.round(duration * 1000.0) / 1000.0;</span>
+<span class="fc" id="L30">        duration = Math.round(duration * 1000.0) / 1000.0;</span>
 
         //promo moins de 30 minutes
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        if(duration &lt;= 0.50){</span>
-<span class="fc" id="L32">            duration = 0;</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if(duration &lt;= 0.50){</span>
+<span class="fc" id="L34">            duration = 0;</span>
         }
 
         //on ajoute le discount au prix
-<span class="pc bpc" id="L36" title="1 of 3 branches missed.">        switch (ticket.getParkingSpot().getParkingType()){</span>
+<span class="pc bpc" id="L38" title="1 of 3 branches missed.">        switch (ticket.getParkingSpot().getParkingType()){</span>
             case CAR: {
-<span class="fc" id="L38">                double price = duration * Fare.CAR_RATE_PER_HOUR;</span>
-<span class="fc" id="L39">                ticket.setPrice(calculateDiscount(discount, price));</span>
-<span class="fc" id="L40">                break;</span>
+<span class="fc" id="L40">                double price = duration * Fare.CAR_RATE_PER_HOUR;</span>
+<span class="fc" id="L41">                ticket.setPrice(calculateDiscount(discount, price));</span>
+<span class="fc" id="L42">                break;</span>
             }
             case BIKE: {
-<span class="fc" id="L43">                double price = duration * Fare.BIKE_RATE_PER_HOUR;</span>
-<span class="fc" id="L44">                ticket.setPrice(calculateDiscount(discount, price));</span>
-<span class="fc" id="L45">                break;</span>
+<span class="fc" id="L45">                double price = duration * Fare.BIKE_RATE_PER_HOUR;</span>
+<span class="fc" id="L46">                ticket.setPrice(calculateDiscount(discount, price));</span>
+<span class="fc" id="L47">                break;</span>
             }
-<span class="nc" id="L47">            default: throw new IllegalArgumentException(&quot;Unkown Parking Type&quot;);</span>
+<span class="nc" id="L49">            default: throw new IllegalArgumentException(&quot;Unkown Parking Type&quot;);</span>
         }
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L51">    }</span>
 
     //fonction pour calculer le discount
     public double calculateDiscount(int discount, double price){
-<span class="fc" id="L53">        double discountedPrice = price - ((price * discount)/100);</span>
+<span class="fc" id="L55">        double discountedPrice = price - ((price * discount)/100);</span>
         //on arrondi à 3 chiffres après la virgule
-<span class="fc" id="L55">        discountedPrice = Math.round(discountedPrice * 1000.0) / 1000.0;</span>
+<span class="fc" id="L57">        discountedPrice = Math.round(discountedPrice * 1000.0) / 1000.0;</span>
 
-<span class="fc" id="L57">        return discountedPrice;</span>
+<span class="fc" id="L59">        return discountedPrice;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

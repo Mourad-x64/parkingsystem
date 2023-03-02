@@ -3,9 +3,11 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
-import java.util.Locale;
-
 public class FareCalculatorService {
+
+    private double MILLISECONDS_IN_SECOND = 1000f;
+    private double SECONDS_IN_HOUR = 3600f;
+
 
     public void calculateFare(Ticket ticket, int discount){
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
@@ -22,7 +24,7 @@ public class FareCalculatorService {
         //TODO DONE: Some tests are failing here. Need to check if this logic is correct
         //duration est en heures donc on divise par 1000 puis 3600
         //ne pas oublier le f pour la précision du float
-        double duration = ((outHour - inHour)/1000f)/3600f;
+        double duration = ((outHour - inHour)/ MILLISECONDS_IN_SECOND)/SECONDS_IN_HOUR;
 
         //on arrondi à 3 chiffres après la virgule
         duration = Math.round(duration * 1000.0) / 1000.0;
